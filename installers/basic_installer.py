@@ -31,7 +31,7 @@ class BasicInstaller(object):
         self.download_file()
         self._install()
 
-        if self._manifest.add_to_path:
+        if self._manifest.get('add_to_path', False):
             self.add_to_path()
 
         return self._verify() if verify else True
@@ -85,6 +85,7 @@ class BasicInstaller(object):
         print 'Downloading', self._manifest.name, '...'
         urllib.urlretrieve(self._manifest.url, self.cache_app_file,
                            self.__report_download)
+        print
 
     def __report_download(self, count, block_size, total_size):
         percent = int(count * block_size * 100 / total_size)

@@ -32,3 +32,6 @@ class __Manifest(object):
 
     def __getattr__(self, item):
         return self.__data[item]
+
+    def get(self, key, default=None):
+        return self.__data.get(key, default)
