@@ -9,7 +9,7 @@ class BasicInstaller(object):
         """
         This is the core function that actually install the package.
         :param manifest: The package manifest.
-        :type manifest: dict
+        :type manifest: manifest.__Manifest
         :param verify: verify the installation on not [default: True]
         :type verify: bool
         :return:
