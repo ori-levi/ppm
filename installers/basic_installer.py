@@ -28,7 +28,10 @@ class BasicInstaller(object):
                  if verify is False return always True.
         :rtype: bool
         """
+        print "Installing '{}' ({}).".format(self._manifest.name,
+                                             self._manifest.version)
         self.download_file()
+        self.check_hash()
         self._install()
 
         if self._manifest.get('add_to_path', False):
