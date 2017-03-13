@@ -36,25 +36,29 @@ class BasicInstaller(object):
 
         return self._verify() if verify else True
 
+    def __lazy_path_load(self, path, attribute):
+        attribute = '_BasicInstaller{}'.format(attribute)
+        if not getattr(self, attribute):
+            setattr(self, attribute, path)
+            if not os.path.exists(path):
+                os.mkdir(path)
+
     @property
     def dir(self):
-        if not self.__dir:
-            self.__dir = os.path.join(os.path.expanduser('~'), 'ppm')
-            self.__create_path_if_not_exists(self.__dir)
+        path = os.path.join(os.path.expanduser('~'), 'ppm')
+        self.__lazy_path_load(path, '__dir')
         return self.__dir
 
     @property
     def app_directory(self):
-        if not self.__app_directory:
-            self.__app_directory = os.path.join(self.dir, self._manifest.name)
-            self.__create_path_if_not_exists(self.__app_directory)
+        path = os.path.join(self.dir, self._manifest.name)
+        self.__lazy_path_load(path, '__app_directory')
         return self.__app_directory
 
     @property
     def cache_directory(self):
-        if not self.__cache_directory:
-            self.__cache_directory = os.path.join(self.dir, 'cache')
-            self.__create_path_if_not_exists(self.__cache_directory)
+        path = os.path.join(self.dir, 'cache')
+        self.__lazy_path_load(path, '__cache_directory')
         return self.__cache_directory
 
     @property
@@ -75,11 +79,6 @@ class BasicInstaller(object):
     @abstractmethod
     def _verify(self):
         pass
-
-    @staticmethod
-    def __create_path_if_not_exists(path):
-        if not os.path.exists(path):
-            os.mkdir(path)
 
     def download_file(self):
         print 'Downloading', self._manifest.name, '...'
